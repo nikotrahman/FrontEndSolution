@@ -15,9 +15,9 @@ api.interceptors.request.use(config=>{
     return config;
 });
 
-export const getUsers=async(endpoint)=>{   
+export const getUsers=async()=>{   
     try{
-        const response=await api.get(endpoint);
+        const response = await api.get('/Biodata')
         return response.data;
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -27,7 +27,7 @@ export const getUsers=async(endpoint)=>{
 
 export const getUserById=async(id)=>{   
     try{
-        const response=await api.get(`/${id}`);
+        const response=await api.get(`/Biodata/${id}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,7 +37,7 @@ export const getUserById=async(id)=>{
 
 export const createUser=async(data)=>{
     try{
-        const response=await api.post('/',data); 
+        const response=await api.post('/Biodata',data); 
         return response.data;
     } catch (error) {
         console.error("Error creating user:", error);
@@ -47,7 +47,7 @@ export const createUser=async(data)=>{
 
 export const updateUser=async(id,data)=>{
     try{
-        const response=await api.put(`?id=${id}`,data); 
+        const response=await api.put(`/Biodata/${id}`,data); 
         return response.data;
     } catch (error) {
         console.error("Error updating user:", error);
@@ -57,7 +57,7 @@ export const updateUser=async(id,data)=>{
 
 export const deleteUser=async(id)=>{
     try{
-        const response=await api.delete(`/${id}`); 
+        const response=await api.delete(`/Biodata/${id}`); 
         return response.data;
     } catch (error) {
         console.error("Error deleting user:", error);
