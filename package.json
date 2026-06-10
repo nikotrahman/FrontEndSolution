@@ -27,12 +27,15 @@
     "@coreui/react-chartjs": "^3.0.0",
     "@coreui/utils": "^2.0.2",
     "@popperjs/core": "^2.11.8",
+    "axios": "^1.16.1",
     "chart.js": "^4.5.1",
     "classnames": "^2.5.1",
     "core-js": "^3.49.0",
+    "jwt-decode": "^4.0.0",
     "prop-types": "^15.8.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-idle-timer": "^5.7.3",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.13.2",
     "redux": "5.0.1",
@@ -51,5 +54,6 @@
     "prettier": "3.8.1",
     "sass": "^1.98.0",
     "vite": "^8.0.3"
-  }
+  },  
+  "proxy": "http://localhost:8002"
 }

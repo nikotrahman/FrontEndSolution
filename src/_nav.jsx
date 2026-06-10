@@ -19,6 +19,7 @@ import {
   cilCursor,
   cilDescription,
   cilDrop,
+  cilUser,
   cilExternalLink,
   cilNotes,
   cilPencil,
@@ -88,6 +89,12 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Theme',
+  },
+  {
+    component: CNavItem,
+    name: 'Master Data',
+    to: '/theme/masterdata',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

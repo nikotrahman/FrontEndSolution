@@ -1,0 +1,67 @@
+import axios from "axios";
+
+export const api=axios.create({
+    baseURL:'http://localhost:8002/api',
+    headers:{
+        'Content-Type':'application/json'
+    },
+});
+
+api.interceptors.request.use(config=>{
+    const token=localStorage.getItem('token');
+    if(token){
+        config.headers.Authorization=`Bearer ${token}`;
+    }
+    return config;
+});
+
+export const getUsers=async(endpoint)=>{   
+    try{
+        const response=await api.get(endpoint);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }   
+};
+
+export const getUserById=async(id)=>{   
+    try{
+        const response=await api.get(`/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }   
+};
+
+export const createUser=async(data)=>{
+    try{
+        const response=await api.post('/',data); 
+        return response.data;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        throw error;
+    }
+};
+
+export const updateUser=async(id,data)=>{
+    try{
+        const response=await api.put(`?id=${id}`,data); 
+        return response.data;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
+    }       
+};
+
+export const deleteUser=async(id)=>{
+    try{
+        const response=await api.delete(`/${id}`); 
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }       
+};
+
