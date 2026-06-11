@@ -1,1 +1,0 @@
-import{N as e,t}from"./index-CoWZCBv9.js";import{N as n,P as r,a as i,o as a}from"./components-I669VR58.js";e();var o=t(),s=()=>(0,o.jsxs)(`div`,{children:[(0,o.jsx)(i,{}),(0,o.jsxs)(`div`,{className:`wrapper d-flex flex-column min-vh-100`,children:[(0,o.jsx)(a,{}),(0,o.jsx)(`div`,{className:`body flex-grow-1`,children:(0,o.jsx)(r,{})}),(0,o.jsx)(n,{})]})]});export{s as default};
