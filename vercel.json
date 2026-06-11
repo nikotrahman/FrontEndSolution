@@ -1,5 +1,10 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    {
+      "source": "/((?!.*\\.(?:js|css|json|png|jpg|jpeg|gif|svg|ico)).*)",
+      "destination": "/"
+    }
+  ]
 }
