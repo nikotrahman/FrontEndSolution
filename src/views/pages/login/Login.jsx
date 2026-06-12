@@ -69,12 +69,12 @@ const Login = () => {
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
-                      {/* Left-side lock icon */}
+                      
                       <CInputGroupText>
                         <CIcon icon={cilShieldAlt} />
                       </CInputGroupText>
 
-                      {/* Password input */}
+                      
                       <CFormInput
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
@@ -83,7 +83,7 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                       />
 
-                      {/* Right-side clickable icon */}
+                      
                       <CInputGroupText
                         onClick={togglePasswordVisibility}
                         style={{ cursor: 'pointer' }}

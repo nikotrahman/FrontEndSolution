@@ -1,1 +1,0 @@
-var e=`/reactapp/assets/1-Bxx5tbqp.jpg`,t=`/reactapp/assets/4-TDOHctEN.jpg`;export{e as n,t};

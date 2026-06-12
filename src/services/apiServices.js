@@ -1,19 +1,40 @@
 import axios from 'axios'
+import { useLoading } from '../context/LoadingContext'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // ✅ Vite style
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-})
+export const setupInterceptors = (setLoading) => {
+  api.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      setLoading(true) 
+      return config
+    },
+    (error) => {
+      setLoading(false) 
+      return Promise.reject(error)
+    },
+  )
+
+  api.interceptors.response.use(
+    (response) => {
+      setLoading(false) 
+      return response
+    },
+    (error) => {
+      setLoading(false) 
+      return Promise.reject(error)
+    },
+  )
+}
 
 // CRUD functions
 export const getUsers = async () => {
