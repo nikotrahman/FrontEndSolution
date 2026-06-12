@@ -47,8 +47,11 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
+    <div
+      className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center"
+      style={{ justifyContent: 'center' }}
+    >
+      <CContainer style={{ maxWidth: '390px' }}>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
@@ -69,12 +72,10 @@ const Login = () => {
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
-                      
                       <CInputGroupText>
                         <CIcon icon={cilShieldAlt} />
                       </CInputGroupText>
 
-                      
                       <CFormInput
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
@@ -83,7 +84,6 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                       />
 
-                      
                       <CInputGroupText
                         onClick={togglePasswordVisibility}
                         style={{ cursor: 'pointer' }}

@@ -1,1 +1,0 @@
-import{t as e}from"./index-SzBT1zrH.js";async function t(t,n){let r=await e.post(`/login`,{username:t,password:n}),{token:i,refreshToken:a}=r.data;return localStorage.setItem(`token`,i),localStorage.setItem(`refreshToken`,a),r.data}async function n(){await e.post(`/logout`),localStorage.removeItem(`token`),localStorage.removeItem(`refreshToken`)}export{n,t};
