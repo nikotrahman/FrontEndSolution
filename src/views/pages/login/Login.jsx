@@ -51,7 +51,7 @@ const Login = () => {
       className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center"
       style={{ justifyContent: 'center' }}
     >
-      <CContainer style={{ maxWidth: '390px' }}>
+      <CContainer style={{ maxWidth: '600px' }}>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
