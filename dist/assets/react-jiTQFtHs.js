@@ -1,0 +1,1 @@
+var e=`/reactapp/assets/react-DmxSGVXA.jpg`;export{e as t};

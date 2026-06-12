@@ -5,7 +5,8 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
-    base: '/',
+    base: '/', // for prod and local
+    //base: '/reactapp/', // for local
     build: {
       outDir: 'dist',
     },

@@ -16,15 +16,19 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked, cilUser, cilLockUnlocked, cilShieldAlt } from '@coreui/icons'
 import { useState } from 'react'  
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);  
   const [error, setError] = useState(''); 
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -49,7 +53,7 @@ const Login = () => {
           <CCol md={8}>
             <CCardGroup>
               <CCard className="p-4">
-                <CCardBody >
+                <CCardBody>
                   <CForm>
                     <h1>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
@@ -57,18 +61,35 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
+                      {/* Left-side lock icon */}
                       <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
+                        <CIcon icon={cilShieldAlt} />
                       </CInputGroupText>
+
+                      {/* Password input */}
                       <CFormInput
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         autoComplete="current-password"
-                        value={password} onChange={(e) => setPassword(e.target.value)}    
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
+
+                      {/* Right-side clickable icon */}
+                      <CInputGroupText
+                        onClick={togglePasswordVisibility}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <CIcon icon={showPassword ? cilLockLocked : cilLockUnlocked} />
+                      </CInputGroupText>
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
