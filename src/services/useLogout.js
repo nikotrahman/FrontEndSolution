@@ -7,7 +7,6 @@ export function useLogout() {
   const handleLogout = async () => {
     try {
     await logout();
-    alert('You have been logged out successfully.');
     } catch (error) {
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');

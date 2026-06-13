@@ -1,0 +1,1 @@
+import{d as e,g as t,l as n,p as r,u as i}from"./CButton-DhUK4k4r.js";var a=t(r()),o=t(i()),s=(0,a.forwardRef)((t,r)=>{var{children:i,className:o}=t,s=e(t,[`children`,`className`]);return a.createElement(`div`,Object.assign({className:n(`card-group`,o)},s,{ref:r}),i)});s.propTypes={children:o.default.node,className:o.default.string},s.displayName=`CCardGroup`;export{s as t};

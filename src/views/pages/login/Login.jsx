@@ -13,6 +13,7 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
+  CFormFeedback,
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -26,23 +27,23 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);  
   const [error, setError] = useState(''); 
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev)
 
   const handleLogin = async(e) => {
     e.preventDefault();
-    const form = e.currentTarget; 
-     
-    try{
-      await login(username, password);
-      navigate('/dashboard');
-      alert('Login successful!');
+    //const form = e.currentTarget; 
+    
+    if (!username || !password) {
+      // Simple validation check
+      setError('Username and password cannot be empty')
+      return
     }
-    catch (err){
-      console.error("Login failed:", err);
-      alert(err.response?.data?.message);
-      setError('Invalid username or password. Please try again.');
+
+    try {
+      await login(username, password)
+      navigate('/dashboard')
+    } catch (err) {
     }
   };
 
@@ -51,7 +52,7 @@ const Login = () => {
       className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center"
       style={{ justifyContent: 'center' }}
     >
-      <CContainer style={{ maxWidth: '600px' }}>
+      <CContainer style={{ maxWidth: '650px' }}>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
@@ -69,8 +70,11 @@ const Login = () => {
                         autoComplete="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        invalid={!username && error}
                       />
                     </CInputGroup>
+                    {!username && error && <CFormFeedback>{error}</CFormFeedback>}
+
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilShieldAlt} />
@@ -82,6 +86,7 @@ const Login = () => {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        invalid={!password && error}
                       />
 
                       <CInputGroupText
@@ -91,6 +96,7 @@ const Login = () => {
                         <CIcon icon={showPassword ? cilLockLocked : cilLockUnlocked} />
                       </CInputGroupText>
                     </CInputGroup>
+                    {!password && error && <CFormFeedback>{error}</CFormFeedback>}
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" onClick={handleLogin}>

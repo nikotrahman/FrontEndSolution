@@ -24,108 +24,100 @@ import { cilList, cilPencil, cilTrash, cilPeople,cilPlus } from '@coreui/icons';
 import { Date } from 'core-js/web';
 
 const Tables = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [modalType, setModalType] = useState(null); // 'delete' or 'update' or 'view'
-  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true) 
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [modalType, setModalType] = useState(null) 
+  const [isLoading, setIsLoading] = useState(false)
 
-  //  GET All Data Function
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiServices.getUsers();
-        setData(response);
-      }finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // For Insert Modal
+  // Insert modal state
   const [visible, setVisible] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     placeOfBirth: '',
-    dateOfBirth: ''
+    dateOfBirth: '',
   })
 
-  const handleInputChange = (e) => {   
-     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };  
+  
+  const refreshUsers = async () => {
+    const response = await apiServices.getUsers()
+    setData(response)
+  }
 
-  // INSERT Function
+  
+  useEffect(() => {
+    ;(async () => {
+      try {
+        await refreshUsers()
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [])
+
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault()
+    setIsLoading(true)
     try {
-      const response = await apiServices.createUser(formData);
-      alert('Data inserted successfully!');
-      // Reset form and close modal on success
-      setFormData({ name: '', placeOfBirth: '', dateOfBirth: '' });
-      setVisible(false);
-      //fetchData(); // Refresh data after successful creation
-      const updatedData = await apiServices.getUsers();
-      setData(updatedData); 
-    } catch (error) {
-      alert(error.response?.data?.message || 'Failed to create user. Please try again.');
+      await apiServices.createUser(formData)
+      setFormData({ name: '', placeOfBirth: '', dateOfBirth: '' })
+      setVisible(false)
+      await refreshUsers()
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };  
-
-  // VIEW Function
-const fetchSelectedUser = async (id) => {
-  try {
-    const response = await apiServices.getUserById(id);
-    setSelectedUser(response);
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-  } finally {
-    setLoading(false);
   }
-};
-// UPDATE Function
+
+  
+  const fetchSelectedUser = async (id) => {
+    setLoading(true)
+    try {
+      const response = await apiServices.getUserById(id)
+      setSelectedUser(response)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  
   const handleUpdate = async () => {
+    setIsLoading(true)
     try {
-      const response = await apiServices.updateUser(selectedUser.id, selectedUser);
-      setUsers(users.map(u => u.id === selectedUser.id ? response : u));
-      const updatedData = await apiServices.getUsers();
-      setData(updatedData); 
-      closeModal();
-    } catch (error) {
-      console.error("Error updating user", error);
+      await apiServices.updateUser(selectedUser.id, selectedUser)
+      await refreshUsers()
+      closeModal()
+    } finally {
+      setIsLoading(false)
     }
-  };
-
-// DELETE Function
-  const handleDelete = async () => {
-    try {
-      await apiServices.deleteUser(selectedUser.id);
-      setUsers(users.filter(u => u.id !== selectedUser.id));
-      const updatedData = await apiServices.getUsers();
-      setData(updatedData); 
-      closeModal();
-    } catch (error) {
-      console.error("Error deleting user", error);
-    }
-  };
-
-  const closeModal = () => {
-    setModalType(null);
-    setSelectedUser(null);
-  };
-
-  // Render loading state or the main content
-  if (loading) {
-    return <div>Loading...</div>;
   }
+
+  
+  const handleDelete = async () => {
+    setIsLoading(true)
+    try {
+      await apiServices.deleteUser(selectedUser.id)
+      await refreshUsers()
+      closeModal()
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  
+  const closeModal = () => {
+    setModalType(null)
+    setSelectedUser(null)
+  }
+
+  
+  if (loading) return <div>Loading...</div>
   return (
   
     <CRow>

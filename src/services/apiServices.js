@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { useLoading } from '../context/LoadingContext'
+import { methodMessageMap } from '../config/messageMap'
+
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -15,27 +17,61 @@ export const setupInterceptors = (setLoading) => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
-      setLoading(true) 
+      setLoading(true)
       return config
     },
     (error) => {
-      setLoading(false) 
+      setLoading(false)
       return Promise.reject(error)
     },
   )
 
   api.interceptors.response.use(
     (response) => {
-      setLoading(false) 
+      setLoading(false)
+
+      const url = response.config.url
+      const method = response.config.method?.toUpperCase()
+
+      let message = null
+
+      if (url.includes('/login')) {
+        message = 'Successful Login'
+      } else if (url.includes('/logout')) {
+        message = 'Successful Logout'
+      } else if (methodMessageMap[method]) {
+        message = methodMessageMap[method]
+      }
+
+      if (message) {
+        window.dispatchEvent(
+          new CustomEvent('apiSuccess', {
+            detail: {
+              message,
+              statusCode: response.status,
+              timestamp: new Date().toISOString(),
+            },
+          }),
+        )
+      }
       return response
     },
     (error) => {
-      setLoading(false) 
+      setLoading(false)
+      const backendData = error.response?.data
+      const payload = {
+        statusCode: error.response?.status,
+        details:
+          typeof backendData === 'string'
+            ? backendData
+            : backendData?.message || error.message || 'Unexpected error',
+        timestamp: backendData?.timestamp || new Date().toISOString(),
+      }
+      window.dispatchEvent(new CustomEvent('apiError', { detail: payload }))
       return Promise.reject(error)
     },
   )
 }
-
 // CRUD functions
 export const getUsers = async () => {
   try {

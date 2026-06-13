@@ -8,6 +8,8 @@ import { LoadingProvider } from './context/LoadingContext'
 import GlobalLoader from './components/GlobalLoader'
 import { api, setupInterceptors } from './services/apiServices'
 import InterceptorInitializer from './services/InterceptorInitializer'
+import ErrorModalWrapper from './components/ErrorModalWrapper'
+import SuccessModalWrapper from './components/SuccessModalWrapper'
 
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -20,6 +22,9 @@ function App() {
     <LoadingProvider>
       <GlobalLoader />
       <InterceptorInitializer />
+      <ErrorModalWrapper />
+      <SuccessModalWrapper />
+
       <BrowserRouter>
         <IdleSessionTimeout>
           <Routes>
@@ -34,6 +39,5 @@ function App() {
     </LoadingProvider>
   )
 }
-
 
 export default App
