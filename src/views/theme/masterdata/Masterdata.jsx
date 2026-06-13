@@ -119,7 +119,6 @@ const Tables = () => {
   
   if (loading) return <div>Loading...</div>
   return (
-  
     <CRow>
       <CModal visible={visible} onClose={() => setVisible(false)}>
         <CModalHeader>
@@ -173,111 +172,161 @@ const Tables = () => {
 
       <CCol xs={12}>
         <CCard className="mb-4">
-      <ReusableModal
-        isOpen={modalType !== null}
-        onClose={closeModal}
-        title={
-          modalType === 'delete' ? 'Delete Confirmation' : 
-          modalType === 'view' ? 'User Details' : 'Edit User'
-        }
-        footerContent={
-          modalType === 'delete' ? (
-            <>
-              <CButton color="secondary" onClick={closeModal}>Cancel</CButton>
-              <CButton color="danger" onClick={handleDelete}>Delete</CButton>
-            </>
-          ) : (
-            <>
-              <CButton color="secondary" onClick={closeModal}>Cancel</CButton>
-              <CButton color="primary" onClick={handleUpdate}>Save Changes</CButton>
-            </>
-          )
-        }
-      >
-        {modalType === 'delete' ? (
-          <p>Are you sure you want to delete {selectedUser?.name}?</p>
-        ) : (
-          selectedUser && (
-            <form>
-              <div className="mb-3">
-                <label>Name</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={selectedUser.name} 
-                  onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
-                  disabled={modalType === 'view'}
-                /> 
-              </div>
-              <div className="mb-3">
-                <label>Place of Birth</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={selectedUser.placeOfBirth} 
-                  onChange={(e) => setSelectedUser({ ...selectedUser, placeOfBirth: e.target.value })} 
-                  disabled={modalType === 'view'} 
-                />
-              </div>
-              <div className="mb-3">  
-                <label>Date of Birth</label>
-                <input 
-                  type="date" 
-                  className="form-control" 
-                  value={selectedUser.dateOfBirth ? selectedUser.dateOfBirth.split('T')[0] : ''} 
-                  onChange={(e) => setSelectedUser({ ...selectedUser, dateOfBirth: e.target.value })} 
-                  disabled={modalType === 'view'} 
-                />
-              </div>
-            </form>
-          ) 
-        )}
-      </ReusableModal>
+          <ReusableModal
+            isOpen={modalType !== null}
+            onClose={closeModal}
+            title={
+              modalType === 'delete'
+                ? 'Delete Confirmation'
+                : modalType === 'view'
+                  ? 'User Details'
+                  : 'Edit User'
+            }
+            footerContent={
+              modalType === 'delete' ? (
+                <>
+                  <CButton color="secondary" onClick={closeModal}>
+                    Cancel
+                  </CButton>
+                  <CButton color="danger" onClick={handleDelete}>
+                    Delete
+                  </CButton>
+                </>
+              ) : (
+                <>
+                  <CButton color="secondary" onClick={closeModal}>
+                    Cancel
+                  </CButton>
+                  <CButton color="primary" onClick={handleUpdate}>
+                    Save Changes
+                  </CButton>
+                </>
+              )
+            }
+          >
+            {modalType === 'delete' ? (
+              <p>Are you sure you want to delete {selectedUser?.name}?</p>
+            ) : (
+              selectedUser && (
+                <form>
+                  <div className="mb-3">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={selectedUser.name}
+                      onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
+                      disabled={modalType === 'view'}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label>Place of Birth</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={selectedUser.placeOfBirth}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, placeOfBirth: e.target.value })
+                      }
+                      disabled={modalType === 'view'}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label>Date of Birth</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={selectedUser.dateOfBirth ? selectedUser.dateOfBirth.split('T')[0] : ''}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, dateOfBirth: e.target.value })
+                      }
+                      disabled={modalType === 'view'}
+                    />
+                  </div>
+                </form>
+              )
+            )}
+          </ReusableModal>
 
           <CCardHeader align="center">
             <CIcon icon={cilPeople} className="me-2" size="sm" />
             Data Users
-            <CButton style={{ float: 'right' }} color="success " size="sm" className="ms-2" onClick={() => setVisible(true)}>
-                <CIcon icon={cilPlus} className="me-2" size="sm" />
-                  Add User
+            <CButton
+              style={{ float: 'right' }}
+              color="success "
+              size="sm"
+              className="ms-2"
+              onClick={() => setVisible(true)}
+            >
+              <CIcon icon={cilPlus} className="me-2" size="sm" />
+              Add User
             </CButton>
           </CCardHeader>
           <CCardBody>
-            <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col">No</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Place Of Birth</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Date Of Birth</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {data.map((item,index) => (
-                  <CTableRow key={item.id}>
-                    <CTableDataCell>{index + 1}</CTableDataCell>
-                    <CTableDataCell>{item.name}</CTableDataCell>
-                    <CTableDataCell>{item.placeOfBirth}</CTableDataCell>
-                    <CTableDataCell>{new Date(item.dateOfBirth).toLocaleDateString()}</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton color="primary" size="sm" onClick={() => { fetchSelectedUser(item.id); setModalType('view'); }}>
-                        <CIcon icon={cilList} className="me-2" size="sm" />
-                          Detail
-                      </CButton>
-                      <CButton color="warning" size="sm" className="ms-2" onClick={() => { fetchSelectedUser(item.id); setModalType('update'); }}>
-                        <CIcon icon={cilPencil} className="me-2" size="sm" />
-                        Edit
-                      </CButton>
-                      <CButton color="danger" size="sm" className="ms-2" onClick={() => { fetchSelectedUser(item.id); setModalType('delete'); }}>
-                        <CIcon icon={cilTrash} className="me-2" size="sm" />
-                        Delete
-                      </CButton>
-                    </CTableDataCell>
+            <div className="table-responsive">
+              <CTable hover striped responsive>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">No</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Place Of Birth</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Date Of Birth</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
                   </CTableRow>
-                ))}
-              </CTableBody>  
-            </CTable>
+                </CTableHead>
+                <CTableBody>
+                  {data.map((item, index) => (
+                    <CTableRow key={item.id}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell>{item.name}</CTableDataCell>
+                      <CTableDataCell>{item.placeOfBirth}</CTableDataCell>
+                      <CTableDataCell>
+                        {new Date(item.dateOfBirth).toLocaleDateString()}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div className="d-flex gap-2">
+                          <CButton
+                            color="primary"
+                            size="sm"
+                            onClick={() => {
+                              fetchSelectedUser(item.id)
+                              setModalType('view')
+                            }}
+                          >
+                            <CIcon icon={cilList} className="me-2" size="sm" />
+                            Detail
+                          </CButton>
+
+                          <CButton
+                            color="warning"
+                            size="sm"
+                            onClick={() => {
+                              fetchSelectedUser(item.id)
+                              setModalType('update')
+                            }}
+                          >
+                            <CIcon icon={cilPencil} className="me-2" size="sm" />
+                            Edit
+                          </CButton>
+
+                          <CButton
+                            color="danger"
+                            size="sm"
+                            onClick={() => {
+                              fetchSelectedUser(item.id)
+                              setModalType('delete')
+                            }}
+                          >
+                            <CIcon icon={cilTrash} className="me-2" size="sm" />
+                            Delete
+                          </CButton>
+                        </div>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>

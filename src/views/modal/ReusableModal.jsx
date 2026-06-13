@@ -15,18 +15,24 @@ const ReusableModal2 = ({
   footerContent 
 }) => {
   return (
-    <CModal visible={isOpen} onClose={onClose}>
+    <CModal
+      visible={isOpen}
+      onClose={onClose}
+      size="lg" 
+      scrollable 
+    >
       <CModalHeader onClose={onClose}>
         <CModalTitle>{title}</CModalTitle>
       </CModalHeader>
       <CModalBody>
-        {children}
+        <div className="table-responsive">
+          {/* ✅ wrap children so tables shrink/scroll on small screens */}
+          {children}
+        </div>
       </CModalBody>
-      <CModalFooter>
-        {footerContent}
-      </CModalFooter>
+      <CModalFooter>{footerContent}</CModalFooter>
     </CModal>
-  );
+  )
 };
 
 export default ReusableModal2;
