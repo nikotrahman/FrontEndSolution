@@ -11,7 +11,7 @@ export async function login(username, password) {
 }
 
 export async function logout() {
-    await api.post('/logout');
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');    
+        await api.post('/logout');
+            localStorage.removeItem('token');
+                localStorage.removeItem('refreshToken');    
 }

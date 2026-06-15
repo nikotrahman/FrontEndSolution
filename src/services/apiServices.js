@@ -59,6 +59,15 @@ export const setupInterceptors = (setLoading) => {
     (error) => {
       setLoading(false)
       const backendData = error.response?.data
+      const statusCode= error.response?.status;
+
+      //Handle inactive/expired session
+      if (statusCode===401){
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href='/login';
+      }
+
       const payload = {
         statusCode: error.response?.status,
         details:
