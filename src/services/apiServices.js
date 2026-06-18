@@ -131,3 +131,23 @@ export const deleteUser = async (id) => {
     throw error
   }
 }
+
+// Chat Endpoints
+export const sendChatMessage=async(message)=>{
+  try{
+    const response=await api.post("/Chat/send",{message});
+    return response.data;
+  }catch(error){
+    throw error;
+  }
+};
+
+export const getHistory=async (Id)=>{
+  try{
+    const response=await api.get(`/Chat/history/${Id}`);
+    return response.data;
+  }
+  catch(error){
+    throw error;
+  }
+};

@@ -26,6 +26,7 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cilSpeak,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -95,6 +96,12 @@ const _nav = [
     name: 'Master Data',
     to: '/theme/masterdata',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  },
+  {
+    component:CNavItem,
+    name: 'Chat AI',
+    to:'/theme/chatAI',
+    icon: <CIcon icon={cilSpeak} customClassName="nav-icon"/>
   },
   {
     component: CNavItem,
