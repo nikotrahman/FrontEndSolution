@@ -1,26 +1,30 @@
-import * as signalR from "@microsoft/signalr";
+import * as signalR from '@microsoft/signalr'
 
-let connection=null;
+let connection = null
 
-export const createSignalRConnection=()=>{
-    const jwt=localStorage.getItem("token");
+export const createSignalRConnection = () => {
+  const token = localStorage.getItem('token') // 👈 use the same variable name
 
-    connection = new signalR.HubConnectionBuilder()
-    .withUrl(`${import.meta.env.VITE_API_URL.replace("/api", "")}/chatHub`, {
-      accessTokenFactory: () => jwt,
+  const apiBase = import.meta.env.VITE_API_URL
+  const hubUrl = apiBase.replace('/api', '') + '/chatHub'
+
+  connection = new signalR.HubConnectionBuilder()
+    .withUrl(hubUrl, {
+      accessTokenFactory: () => token, // 👈 now matches
+      transport: signalR.HttpTransportType.WebSockets, // force WebSockets
     })
     .withAutomaticReconnect()
     .configureLogging(signalR.LogLevel.Information)
-    .build();
+    .build()
 
-    return connection;
-};
+  return connection
+}
 
-export const getConnection=()=>connection;
+export const getConnection = () => connection
 
 export const stopConnection = async () => {
   if (connection) {
-    await connection.stop();
-    connection = null;
+    await connection.stop()
+    connection = null
   }
-};
+}

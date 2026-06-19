@@ -39,7 +39,8 @@ export const setupInterceptors = (setLoading) => {
         message = 'Successful Login'
       } else if (url.includes('/logout')) {
         message = 'Successful Logout'
-      } else if (methodMessageMap[method]) {
+      } else if (!url.includes('/Chat') && methodMessageMap[method]) {
+        // exclude AI/chat endpoint from success modal
         message = methodMessageMap[method]
       }
 
@@ -69,13 +70,11 @@ export const setupInterceptors = (setLoading) => {
       }
 
       const payload = {
-        statusCode: error.response?.status,
-        details:
-          typeof backendData === 'string'
-            ? backendData
-            : backendData?.message || error.message || 'Unexpected error',
-        timestamp: backendData?.timestamp || new Date().toISOString(),
+        statusCode,
+        message: backendData?.message || error.message || 'Unexpected error',
+        details: backendData?.details || null
       }
+
       window.dispatchEvent(new CustomEvent('apiError', { detail: payload }))
       return Promise.reject(error)
     },
@@ -135,8 +134,17 @@ export const deleteUser = async (id) => {
 // Chat Endpoints
 export const sendChatMessage=async(message)=>{
   try{
-    const response=await api.post("/Chat/send",{message});
-    return response.data;
+    const id = localStorage.getItem('id')
+
+    const payload = {
+      userId: String(id), // 👈 ensure string
+      message: message,
+    }
+
+    console.log('Payload:', payload)
+
+    const response = await api.post('/Chat/send', payload)
+    return response.data.content;
   }catch(error){
     throw error;
   }

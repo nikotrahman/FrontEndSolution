@@ -24,10 +24,10 @@ export default function ErrorModalWrapper() {
     >
       {error && (
         <>
+          {error.message && <p><strong>{error.message}</strong></p>}
           {error.details && <p>{error.details}</p>}
           <small>
             {error.statusCode ? `Status: ${error.statusCode} ` : ''}
-            {error.timestamp ? `| Time: ${error.timestamp}` : ''}
           </small>
         </>
       )}
