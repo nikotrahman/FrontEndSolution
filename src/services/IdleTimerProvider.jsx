@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {IdleTimerProvider} from 'react-idle-timer';
 import {api} from "./apiServices";
@@ -10,6 +10,7 @@ const IdleSessionTimeout = ({ children }) => {
 
   // Set idle timeout to 15 minutes (900,000 milliseconds)
   const timeout = 15 * 60 * 1000 // 900000 ms
+  const channel=new BroadcastChannel('user-activity') //shared channel
   
   const onIdle = async () => {
     const elapsedMs = Date.now() - startTimeRef.current
@@ -17,6 +18,7 @@ const IdleSessionTimeout = ({ children }) => {
     const elapsedSeconds = Math.floor((elapsedMs % 60000) / 1000)
 
     console.log('IdleTimerProvider mounted, timeout set to', timeout)
+    console.log(`Elapsed: ${elapsedMinutes}m ${elapsedSeconds}s`)
 
     await logout()
     navigate('/login', { replace: true })
@@ -32,6 +34,22 @@ const IdleSessionTimeout = ({ children }) => {
       }),
     )
   }
+
+  //Broadcast activity to other tabs
+  const onActive=()=>{
+    channel.postMessage({type:'activity', timestamp: Date.now()})
+  }
+
+  useEffect(()=>{
+    // Listen for activity messages from other tabs
+    channel.onmessage=(event)=>{
+      if (event.data.type==='activity'){
+        console.log('Activity recevied from another tab')
+        startTimeRef.current=Date.now() //reset timer
+      }
+    }
+    return ()=>channel.close()
+  },[])
 
   return (
     <IdleTimerProvider timeout={timeout} onIdle={onIdle} debounce={500}>

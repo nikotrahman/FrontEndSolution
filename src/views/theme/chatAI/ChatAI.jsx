@@ -8,6 +8,7 @@ export default function ChatAI() {
   const [chat, setChat] = useState([])
   const [connection, setConnection] = useState(null)
   const chatEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   // Auto-scroll to bottom when chat updates
   useEffect(() => {
@@ -87,6 +88,7 @@ export default function ChatAI() {
         ])
       }
       setMessage('')
+      if (inputRef.current) inputRef.current.focus() // keep keyboard open on Android
     } catch (err) {
       console.error('Send failed:', err)
     }
@@ -135,6 +137,7 @@ export default function ChatAI() {
             <CRow>
               <CCol xs={9}>
                 <CFormInput
+                  ref={inputRef}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type message..."

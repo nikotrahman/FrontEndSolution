@@ -61,21 +61,32 @@ export const setupInterceptors = (setLoading) => {
       setLoading(false)
       const backendData = error.response?.data
       const statusCode= error.response?.status;
+      const requestUrl=error.config?.url
 
       //Handle inactive/expired session
-      if (statusCode===401){
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        window.location.href='/login';
+      if (statusCode === 401) {
+        if (requestUrl?.includes('/login')) {
+          const payload = {
+            statusCode,
+            message: backendData?.message || 'Invalid username or password',
+            details: backendData?.details || null,
+          }
+          window.dispatchEvent(new CustomEvent('apiError', { detail: payload }))
+        } else {
+          // Expired session -> redirect
+          localStorage.removeItem('token')
+          localStorage.removeItem('refreshToken')
+          window.location.href = '/login'
+        }
+      } else {
+        // Other errors
+        const payload = {
+          statusCode,
+          message: backendData?.message || error.message || 'Unexpected error',
+          details: backendData?.details || null,
+        }
+        window.dispatchEvent(new CustomEvent('apiError', { detail: payload }))
       }
-
-      const payload = {
-        statusCode,
-        message: backendData?.message || error.message || 'Unexpected error',
-        details: backendData?.details || null
-      }
-
-      window.dispatchEvent(new CustomEvent('apiError', { detail: payload }))
       return Promise.reject(error)
     },
   )
