@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useLoading } from '../context/LoadingContext'
 import { methodMessageMap } from '../config/messageMap'
 
-
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -60,8 +59,8 @@ export const setupInterceptors = (setLoading) => {
     (error) => {
       setLoading(false)
       const backendData = error.response?.data
-      const statusCode= error.response?.status;
-      const requestUrl=error.config?.url
+      const statusCode = error.response?.status
+      const requestUrl = error.config?.url
 
       //Handle inactive/expired session
       if (statusCode === 401) {
@@ -143,8 +142,8 @@ export const deleteUser = async (id) => {
 }
 
 // Chat Endpoints
-export const sendChatMessage=async(message)=>{
-  try{
+export const sendChatMessage = async (message) => {
+  try {
     const id = localStorage.getItem('id')
 
     const payload = {
@@ -155,18 +154,65 @@ export const sendChatMessage=async(message)=>{
     console.log('Payload:', payload)
 
     const response = await api.post('/Chat/send', payload)
-    return response.data.content;
-  }catch(error){
-    throw error;
+    return response.data.content
+  } catch (error) {
+    throw error
   }
-};
+}
 
-export const getHistory=async (Id)=>{
-  try{
-    const response=await api.get(`/Chat/history/${Id}`);
-    return response.data;
+export const getHistory = async (Id) => {
+  try {
+    const response = await api.get(`/Chat/history/${Id}`)
+    return response.data
+  } catch (error) {
+    throw error
   }
-  catch(error){
-    throw error;
+}
+
+//for bmkg data
+
+// Weather by sessionId
+export const getBmkgWeather = async (sessionId) => {
+  try {
+    const response = await api.get(`/bmkg/weather?sessionId=${sessionId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching BMKG weather:', error)
+    throw error
   }
-};
+}
+
+// Latest earthquake
+export const getBmkgEarthquake = async () => {
+  try {
+    const response = await api.get(`/bmkg/earthquake`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching BMKG earthquake:', error)
+    throw error
+  }
+}
+
+// Weather history (for charts)
+export const getBmkgWeatherHistory = async (location) => {
+  try {
+    const response = await api.get(`/bmkg/weather/history`, {
+      params: { location },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching BMKG weather history:', error)
+    throw error
+  }
+}
+
+// Earthquake history (for lists or charts)
+export const getBmkgEarthquakeHistory = async () => {
+  try {
+    const response = await api.get(`/bmkg/earthquake/history`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching BMKG earthquake history:', error)
+    throw error
+  }
+}

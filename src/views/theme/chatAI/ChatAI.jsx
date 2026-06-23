@@ -1,6 +1,6 @@
 import { useState, useEffect,useRef } from 'react'
 import { sendChatMessage, getHistory } from '../../../services/apiServices'
-import { createSignalRConnection, stopConnection } from '../../../services/signalRServices'
+import { createChatConnection, stopChatConnection } from '../../../services/signalRServices'
 import { CCard, CCardHeader, CCardBody, CFormInput, CButton, CRow, CCol } from '@coreui/react'
 
 export default function ChatAI() {
@@ -42,7 +42,7 @@ export default function ChatAI() {
 
   // Setup SignalR connection
   useEffect(() => {
-    const conn = createSignalRConnection()
+    const conn = createChatConnection()
 
     // Handle incoming messages
     conn.on('ReceiveMessage', (sender, payload) => {
@@ -66,7 +66,7 @@ export default function ChatAI() {
       .catch((err) => console.error('SignalR error:', err))
 
     return () => {
-      stopConnection()
+      stopChatConnection()
     }
   }, [])
 
