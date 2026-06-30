@@ -47,49 +47,63 @@ import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
 import BmkgPanel from './BmkgPanel'
+import StockViewPage from './StockViewPage'
 
 function Dashboard() {
   return (
-    <CRow>
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 6 */}
-        <BmkgPanel />
-      </CCol>
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 2 */}
-        <CCard>
-          <CCardHeader>Panel 2</CCardHeader>
-        </CCard>
-      </CCol>
+    <>
+      {/* First row: BMKG, Stock, Panel 3 */}
+      <CRow>
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>BMKG Weather & Earthquakes</CCardHeader>
+            <CCardBody>
+              <BmkgPanel />
+            </CCardBody>
+          </CCard>
+        </CCol>
 
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 3 */}
-        <CCard>
-          <CCardHeader>Panel 3</CCardHeader>
-        </CCard>
-      </CCol>
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>Stock Market Dashboard</CCardHeader>
+            <CCardBody>
+              <StockViewPage />
+            </CCardBody>
+          </CCard>
+        </CCol>
 
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 4 */}
-        <CCard>
-          <CCardHeader>Panel 4</CCardHeader>
-        </CCard>
-      </CCol>
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>Panel 3</CCardHeader>
+            <CCardBody>{/* Content for Panel 3 */}</CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
 
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 5 */}
-        <CCard>
-          <CCardHeader>Panel 5</CCardHeader>
-        </CCard>
-      </CCol>
+      {/* Second row: Panel 4, Panel 5, Panel 6 */}
+      <CRow className="mt-4">
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>Panel 4</CCardHeader>
+            <CCardBody>{/* Content for Panel 4 */}</CCardBody>
+          </CCard>
+        </CCol>
 
-      <CCol xs={12} md={6} lg={4}>
-        {/* Panel 6 */}
-        <CCard>
-          <CCardHeader>Panel 6</CCardHeader>
-        </CCard>
-      </CCol>
-    </CRow>
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>Panel 5</CCardHeader>
+            <CCardBody>{/* Content for Panel 5 */}</CCardBody>
+          </CCard>
+        </CCol>
+
+        <CCol xs={12} md={6} lg={4}>
+          <CCard>
+            <CCardHeader>Panel 6</CCardHeader>
+            <CCardBody>{/* Content for Panel 6 */}</CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </>
   )
 }
 
